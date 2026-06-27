@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Talk Timer · Output Day | English Pocket Planner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#F5F0E8;--paper:#EDE8DF;--rule:#D4CCC0;
+    --black:#1A1814;--charcoal:#2D2926;
+    --terra:#C2714F;--terra-light:#D4896A;
+    --warm:#8B7355;--muted:#6B6357;--white:#FDFAF5;
+    --success:#5B9E6B;--error:#C2504F;
+  }
+  body{font-family:'Inter','Helvetica Neue',sans-serif;background:var(--cream);color:var(--black);min-height:100vh}
+
+  header{background:var(--white);border-bottom:1px solid var(--rule);padding:0 28px;display:flex;align-items:stretch;justify-content:space-between;min-height:52px}
+  .wordmark{display:flex;align-items:center;font-family:'Arial Black','Helvetica Neue',Helvetica,sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;text-transform:uppercase;border-right:1px solid var(--rule);padding-right:20px;margin-right:20px}
+  .wordmark span{color:var(--terra)}
+  .hd-meta{display:flex;align-items:center;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#B5A48A}
+  .badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--terra);font-weight:700;border:1px solid var(--terra);padding:4px 10px;display:flex;align-items:center}
+
+  .hero{background:var(--black);padding:40px 32px 36px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(194,113,79,.1)}
+  .hero::after{content:'🎉';position:absolute;bottom:20px;right:32px;font-size:64px;opacity:.08;line-height:1}
+  .eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+  .eyebrow::after{content:'';width:40px;height:1px;background:var(--terra);opacity:.4}
+  .hero h1{font-family:'Arial Black','Helvetica Neue',Helvetica,sans-serif;font-weight:900;font-size:36px;letter-spacing:-1.5px;color:var(--white);line-height:1.05}
+  .hero h1 em{font-family:'Georgia',serif;font-weight:400;font-style:italic;color:var(--terra);font-size:34px}
+  .hero-goal{font-size:13px;color:#B5A48A;margin-top:14px;line-height:1.6;max-width:500px}
+  .hero-goal strong{color:var(--white)}
+  .hero-tags{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .htag{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:4px 10px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4)}
+  .htag.on{border-color:var(--terra);color:var(--terra)}
+
+  .wrap{max-width:660px;margin:0 auto;padding:36px 24px 80px}
+  .sec-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+  .sec-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+  /* WEEK SUMMARY */
+  .week-summary{background:var(--white);border:1px solid var(--rule);padding:22px 26px;margin-bottom:32px}
+  .week-summary h4{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:16px}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .summary-item{background:var(--cream);border:1px solid var(--rule);padding:12px 14px}
+  .summary-day{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+  .summary-topic{font-size:13px;font-weight:600;color:var(--black);margin-bottom:3px}
+  .summary-vocab{font-size:11px;color:var(--muted);line-height:1.4}
+
+  .focus-box{background:var(--white);border:1px solid var(--rule);border-left:3px solid var(--terra);padding:18px 22px;margin-bottom:32px}
+  .focus-box h4{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:12px}
+  .focus-item{display:flex;gap:10px;font-size:13px;color:var(--charcoal);line-height:1.6;margin-bottom:8px}
+  .focus-item:last-child{margin-bottom:0}
+  .focus-item::before{content:'◆';color:var(--terra);font-size:8px;margin-top:4px;flex-shrink:0}
+
+  .topics-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
+  .topic-btn{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--white);border:1px solid var(--rule);cursor:pointer;text-align:left;transition:all .15s;width:100%}
+  .topic-btn:hover{border-color:var(--terra)}
+  .topic-btn.active{border-color:var(--black);background:var(--black)}
+  .topic-num{font-family:'Arial Black',Helvetica,sans-serif;font-size:11px;font-weight:900;color:var(--terra);min-width:20px;letter-spacing:1px}
+  .topic-info{flex:1}
+  .topic-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:3px}
+  .topic-btn.active .topic-name{color:var(--white)}
+  .topic-focus{font-size:11px;color:var(--muted);line-height:1.4}
+  .topic-btn.active .topic-focus{color:#B5A48A}
+  .topic-dur{font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:600;border:1px solid var(--rule);padding:3px 8px;flex-shrink:0}
+  .topic-btn.active .topic-dur{border-color:rgba(255,255,255,.2);color:#B5A48A}
+  .topic-done{font-size:14px;flex-shrink:0}
+  .topic-final{border:1px solid var(--terra) !important;}
+  .topic-final .topic-num{color:var(--terra)}
+
+  .timer-card{background:var(--black);padding:32px;margin-bottom:28px;position:relative;overflow:hidden}
+  .timer-card::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(194,113,79,.08)}
+  .timer-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:10px}
+  .timer-topic{font-family:'Georgia',serif;font-style:italic;font-size:20px;color:var(--white);margin-bottom:6px;line-height:1.3}
+  .timer-prompt{font-size:13px;color:#B5A48A;margin-bottom:10px;line-height:1.6;max-width:480px}
+  .timer-goals{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+  .goal-item{display:flex;gap:8px;font-size:12px;color:#B5A48A;line-height:1.5}
+  .goal-item::before{content:'→';color:var(--terra);flex-shrink:0}
+
+  .timer-circle-wrap{display:flex;justify-content:center;margin-bottom:24px}
+  .circle-svg{transform:rotate(-90deg)}
+  .circle-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:6}
+  .circle-fill{fill:none;stroke:var(--terra);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s linear;stroke-dasharray:408;stroke-dashoffset:408}
+  .circle-fill.warning{stroke:#D4A84B}
+  .circle-fill.danger{stroke:var(--terra-light);animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .timer-inner{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .timer-digits{font-family:'Arial Black',Helvetica,sans-serif;font-size:44px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1}
+  .timer-unit{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#B5A48A;margin-top:4px}
+
+  .phase-bar{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+  .phase-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12);transition:background .3s}
+  .phase-dot.done{background:var(--success)}
+  .phase-dot.active{background:var(--terra)}
+
+  .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn-start{background:var(--terra);color:var(--white);border:none;padding:13px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+  .btn-start:hover{background:var(--terra-light)}
+  .btn-start:disabled{opacity:.35;cursor:default}
+  .btn-skip{background:transparent;color:#B5A48A;border:1px solid rgba(255,255,255,.15);padding:12px 20px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:none}
+  .btn-skip:hover{border-color:rgba(255,255,255,.35);color:var(--white)}
+  .btn-reset-sm{background:transparent;color:#B5A48A;border:1px solid rgba(255,255,255,.1);padding:12px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+
+  .toast{display:none;padding:10px 16px;font-size:12px;font-weight:600;text-align:center;margin-bottom:12px}
+  .toast.show{display:block;background:var(--success);color:var(--white)}
+  .toast.warn{background:#D4A84B;color:var(--white)}
+
+  .tips-box{background:var(--white);border:1px solid var(--rule);border-left:3px solid var(--terra);padding:20px 24px;margin-bottom:32px}
+  .tips-box h4{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:12px}
+  .tip-item{display:flex;gap:10px;font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+  .tip-item:last-child{margin-bottom:0}
+  .tip-item::before{content:'→';color:var(--terra);flex-shrink:0}
+
+  .results-card{display:none;background:var(--white);border:1px solid var(--rule);padding:32px;margin-top:8px}
+  .results-card.show{display:block}
+  .results-title{font-family:'Arial Black',Helvetica,sans-serif;font-size:20px;font-weight:900;letter-spacing:-0.5px;color:var(--black);margin-bottom:4px}
+  .results-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
+  .result-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--rule)}
+  .result-row:last-of-type{border-bottom:none}
+  .rr-num{font-family:'Arial Black',Helvetica,sans-serif;font-size:11px;font-weight:900;color:var(--terra);min-width:20px}
+  .rr-info{flex:1}
+  .rr-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:2px}
+  .rr-time{font-size:12px;color:var(--muted)}
+  .rr-bar-wrap{width:100px;height:4px;background:var(--paper);border-radius:99px;overflow:hidden}
+  .rr-bar{height:100%;background:var(--terra);border-radius:99px}
+  .rr-status{font-size:10px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:right}
+  .rr-status.full{color:var(--success)}
+  .rr-status.partial{color:#D4A84B}
+  .rr-status.skipped{color:var(--muted)}
+  .results-msg{background:var(--cream);border:1px solid var(--rule);padding:16px 20px;margin-top:20px;font-size:13px;color:var(--charcoal);line-height:1.7}
+  .results-msg strong{color:var(--terra)}
+  .btn-restart{background:var(--black);color:var(--cream);border:none;padding:13px 28px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:20px}
+
+  @media(max-width:580px){
+    .hero{padding:28px 20px}
+    .hero h1{font-size:26px}
+    .hero h1 em{font-size:24px}
+    .wrap{padding:28px 16px 60px}
+    header{padding:0 16px}
+    .controls{flex-direction:column;align-items:stretch;text-align:center}
+    .timer-digits{font-size:36px}
+    .summary-grid{grid-template-columns:1fr}
+    .rr-bar-wrap{width:60px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center">
+    <div class="wordmark">Renata<span>em</span>Inglês</div>
+    <span class="hd-meta">English Pocket Planner</span>
+  </div>
+  <div style="display:flex;align-items:center">
+    <span class="badge">Week 2 · Friday</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Talk Timer · Week 2 · Friday</div>
+  <h1>Output Day<br><em>Tell Your Story</em></h1>
+  <p class="hero-goal"><strong>Today is about production.</strong> No new grammar — just you speaking. Use everything you practiced this week: Past Simple, Past Continuous, life events, emotions and story connectors.</p>
+  <div class="hero-tags">
+    <span class="htag on">Past Simple</span>
+    <span class="htag on">Past Continuous</span>
+    <span class="htag on">Life Events</span>
+    <span class="htag on">Connectors</span>
+    <span class="htag on">Full Output</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="sec-label">What you learned this week</div>
+  <div class="week-summary">
+    <h4>◆ Week 2 — Quick recap before you speak</h4>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-day">Monday</div>
+        <div class="summary-topic">Past Simple</div>
+        <div class="summary-vocab">went, saw, had, told · didn't + base verb · Did you…?</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-day">Tuesday</div>
+        <div class="summary-topic">Past Continuous</div>
+        <div class="summary-vocab">was/were + -ing · background scene · interrupted action</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-day">Wednesday</div>
+        <div class="summary-topic">Life Events & Emotions</div>
+        <div class="summary-vocab">graduated, fell in love, moved to, realized, overwhelmed, proud…</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-day">Thursday</div>
+        <div class="summary-topic">Story Connectors</div>
+        <div class="summary-vocab">first… then… after that… suddenly… eventually… in the end…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">Today's challenge</div>
+  <div class="focus-box">
+    <h4>◆ Rules for Output Day</h4>
+    <div class="focus-item"><strong>No stopping to translate.</strong> If you don't know a word, describe it or use a simpler one and keep going.</div>
+    <div class="focus-item"><strong>No silence longer than 3 seconds.</strong> Use fillers: "Well…", "So basically…", "What I mean is…", "You know what happened?"</div>
+    <div class="focus-item"><strong>Mix all the grammar.</strong> Past Simple for events, Past Continuous for scenes, connectors to flow, emotions to add depth.</div>
+    <div class="focus-item"><strong>Grave o áudio.</strong> Ouça depois e anote: onde travou, qual gramática saiu natural, o que ainda soa estranho.</div>
+  </div>
+
+  <div class="sec-label">Topics</div>
+  <div class="topics-grid" id="topicsList"></div>
+
+  <div class="tips-box">
+    <h4>◆ Output Day Tips</h4>
+    <div class="tip-item">Comece cada tópico com uma frase de contexto em Past Continuous: "I was living in… / It was a time when I was…"</div>
+    <div class="tip-item">Use connectors para estruturar: first… then… after that… suddenly… eventually… in the end…</div>
+    <div class="tip-item">Adicione emoções para tornar a história real: "I felt overwhelmed / proud / terrified / relieved when…"</div>
+    <div class="tip-item">O tópico final é o seu grande desafio — 3 minutos contando tudo que aprendeu esta semana numa história só.</div>
+  </div>
+
+  <div class="sec-label">Timer</div>
+  <div class="timer-card">
+    <div class="toast" id="toast"></div>
+    <div class="timer-eyebrow">Output Day Sprint</div>
+    <div class="timer-topic" id="timerTopic">Selecione um tópico acima</div>
+    <div class="timer-prompt" id="timerPrompt">Escolha um tópico para ver o prompt aqui.</div>
+    <div class="timer-goals" id="timerGoals" style="display:none"></div>
+
+    <div class="phase-bar" id="phasebar"></div>
+
+    <div class="timer-circle-wrap">
+      <div style="position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center">
+        <svg class="circle-svg" width="160" height="160" viewBox="0 0 140 140">
+          <circle class="circle-bg" cx="70" cy="70" r="65"/>
+          <circle class="circle-fill" id="circleArc" cx="70" cy="70" r="65"/>
+        </svg>
+        <div class="timer-inner">
+          <div class="timer-digits" id="timerDisplay">—</div>
+          <div class="timer-unit" id="timerUnit">select topic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-start" id="btnStart" onclick="handleStart()" disabled>Start →</button>
+      <button class="btn-skip" id="btnSkip" onclick="skipTopic()">Skip topic</button>
+      <button class="btn-reset-sm" onclick="resetTimer()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="results-card" id="resultsCard">
+    <div class="results-title">Week 2 Complete 🎉</div>
+    <div class="results-sub" id="resultsSub"></div>
+    <div id="resultsList"></div>
+    <div class="results-msg" id="resultsMsg"></div>
+    <button class="btn-restart" onclick="restartAll()">↺ Praticar novamente</button>
+  </div>
+
+</div>
+
+<script>
+const TOPICS = [
+  {
+    id:1, label:"01", duration:60,
+    name:"Warm-up — your week in 1 minute",
+    focus:"Past Simple · recap",
+    prompt:"Tell me about your week. What did you do? What didn't you expect? Use Past Simple for everything — this is your warm-up.",
+    goals:["Use at least 4 Past Simple verbs — regular and irregular","Use didn't at least once","Don't overthink — just talk"]
+  },
+  {
+    id:2, label:"02", duration:90,
+    name:"Set the scene — what were you doing?",
+    focus:"Past Continuous · background + interruption",
+    prompt:"Tell me a story where you describe the scene first using Past Continuous, then introduce what happened using Past Simple. Start with: 'It was [time/place]. I was…'",
+    goals:["Open with Past Continuous — set the scene before the action","Use 'when' or 'while' to connect the interruption","Include at least one emotion: 'I felt… when it happened'"]
+  },
+  {
+    id:3, label:"03", duration:90,
+    name:"A life event with emotion",
+    focus:"Life events + emotions + Past Simple",
+    prompt:"Talk about one life event that brought strong emotions. Use vocabulary from this week: fell in love, moved to, quit, realized, started over, overwhelmed, heartbroken, proud, relieved…",
+    goals:["Use at least 2 life event expressions","Use at least 2 emotion words","Be specific — use a year, a place, a name to make it real"]
+  },
+  {
+    id:4, label:"04", duration:90,
+    name:"Tell it with connectors",
+    focus:"Story connectors · all grammar",
+    prompt:"Tell any story from your life — but this time focus on using connectors to make it flow: first… then… after that… meanwhile… suddenly… eventually… in the end…",
+    goals:["Use at least 5 different connectors","Mix Past Simple and Past Continuous naturally","End with a reflection: 'In the end, I realized that…' or 'Looking back, I think…'"]
+  },
+  {
+    id:5, label:"05", duration:180,
+    name:"⭐ Final story — everything in 3 minutes",
+    focus:"All grammar · full output · Week 2 finale",
+    prompt:"This is your Week 2 finale. Tell me the most meaningful story from your life using EVERYTHING you practiced this week: Past Simple, Past Continuous, life events, emotions and story connectors. 3 minutes. Make it count.",
+    goals:["Past Simple for completed actions — went, saw, felt, told, realized…","Past Continuous for the background scene — 'I was living in… when suddenly…'","Life events & emotions — fell in love, moved, overwhelmed, proud, heartbroken…","Story connectors — first, then, after that, suddenly, eventually, in the end","Zero translation stops — think in English from the first word"]
+  },
+];
+
+const CIRCUMFERENCE=2*Math.PI*65;
+let currentIdx=null,timerInterval=null,timeLeft=0,totalTime=0,isRunning=false,sessionResults=[];
+
+function fmt(s){const m=Math.floor(s/60),sec=s%60;return m>0?`${m}:${sec.toString().padStart(2,'0')}`:String(s);}
+
+function renderTopics(){
+  const grid=document.getElementById('topicsList');
+  grid.innerHTML='';
+  TOPICS.forEach((t,i)=>{
+    const done=sessionResults.find(r=>r.id===t.id);
+    const active=currentIdx===i;
+    const isFinal=i===TOPICS.length-1;
+    const btn=document.createElement('button');
+    btn.className='topic-btn'+(active?' active':'')+(isFinal?' topic-final':'');
+    btn.onclick=()=>selectTopic(i);
+    btn.innerHTML=`
+      <span class="topic-num">${t.label}</span>
+      <div class="topic-info">
+        <div class="topic-name">${t.name}</div>
+        <div class="topic-focus">${t.focus}</div>
+      </div>
+      <span class="topic-dur">${fmt(t.duration)}</span>
+      <span class="topic-done">${done?(done.completed?'✅':'⏭'):''}</span>
+    `;
+    grid.appendChild(btn);
+  });
+}
+
+function renderPhasebar(){
+  const bar=document.getElementById('phasebar');
+  bar.innerHTML='';
+  TOPICS.forEach((_,i)=>{
+    const done=sessionResults.find(r=>r.id===TOPICS[i].id);
+    const dot=document.createElement('div');
+    dot.className='phase-dot'+(done?' done':(currentIdx===i?' active':''));
+    bar.appendChild(dot);
+  });
+}
+
+function selectTopic(idx){
+  if(isRunning)return;
+  currentIdx=idx;
+  const t=TOPICS[idx];
+  timeLeft=t.duration;totalTime=t.duration;
+  document.getElementById('timerTopic').textContent=t.name;
+  document.getElementById('timerPrompt').textContent=t.prompt;
+  const g=document.getElementById('timerGoals');
+  g.style.display='flex';
+  g.innerHTML=t.goals.map(gl=>`<div class="goal-item">${gl}</div>`).join('');
+  document.getElementById('timerDisplay').textContent=fmt(timeLeft);
+  document.getElementById('timerUnit').textContent=timeLeft>=60?'minutes':'seconds';
+  document.getElementById('btnStart').disabled=false;
+  document.getElementById('btnStart').textContent='Start →';
+  document.getElementById('btnSkip').style.display='none';
+  updateArc(1,1);
+  document.getElementById('circleArc').classList.remove('warning','danger');
+  renderTopics();renderPhasebar();
+}
+
+function updateArc(left,total){
+  const arc=document.getElementById('circleArc');
+  const pct=left/total;
+  arc.style.strokeDashoffset=CIRCUMFERENCE*(1-pct);
+  arc.classList.remove('warning','danger');
+  if(pct<=0.25&&pct>0.1)arc.classList.add('warning');
+  else if(pct<=0.1)arc.classList.add('danger');
+}
+
+function handleStart(){if(currentIdx===null)return;isRunning?pauseTimer():startTimer();}
+function startTimer(){isRunning=true;document.getElementById('btnStart').textContent='Pause ⏸';document.getElementById('btnSkip').style.display='inline-block';timerInterval=setInterval(tick,1000);}
+function pauseTimer(){isRunning=false;clearInterval(timerInterval);document.getElementById('btnStart').textContent='Resume →';}
+
+function tick(){
+  timeLeft--;
+  document.getElementById('timerDisplay').textContent=fmt(timeLeft);
+  document.getElementById('timerUnit').textContent=timeLeft>=60?'minutes':'seconds';
+  updateArc(timeLeft,totalTime);
+  if(timeLeft===60)showToast('1 minute left — start wrapping up!','warn');
+  if(timeLeft===30)showToast('30 seconds — finish strong!','warn');
+  if(timeLeft===10)showToast('10 seconds… last sentence!','warn');
+  if(timeLeft<=0){clearInterval(timerInterval);isRunning=false;completeTopic(true);}
+}
+
+function skipTopic(){clearInterval(timerInterval);isRunning=false;completeTopic(false);}
+
+function completeTopic(completed){
+  const t=TOPICS[currentIdx];
+  const elapsed=totalTime-timeLeft;
+  sessionResults.push({id:t.id,name:t.name,elapsed,total:totalTime,completed});
+  showToast(completed?'✓ Great job! Moving on…':'⏭ Skipped.');
+  document.getElementById('btnStart').textContent='Start →';
+  document.getElementById('btnSkip').style.display='none';
+  document.getElementById('btnStart').disabled=true;
+  document.getElementById('timerDisplay').textContent='✓';
+  document.getElementById('timerUnit').textContent='done';
+  renderTopics();renderPhasebar();
+  setTimeout(()=>{const next=findNext();if(next!==null)selectTopic(next);else showResults();},1800);
+}
+
+function findNext(){
+  const doneIds=sessionResults.map(r=>r.id);
+  for(let i=0;i<TOPICS.length;i++)if(!doneIds.includes(TOPICS[i].id))return i;
+  return null;
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);isRunning=false;
+  if(currentIdx!==null){
+    const t=TOPICS[currentIdx];
+    timeLeft=t.duration;totalTime=t.duration;
+    document.getElementById('timerDisplay').textContent=fmt(timeLeft);
+    document.getElementById('timerUnit').textContent=timeLeft>=60?'minutes':'seconds';
+    updateArc(1,1);
+    document.getElementById('circleArc').classList.remove('warning','danger');
+    document.getElementById('btnStart').textContent='Start →';
+    document.getElementById('btnStart').disabled=false;
+    document.getElementById('btnSkip').style.display='none';
+  }
+}
+
+function showResults(){
+  const card=document.getElementById('resultsCard');
+  card.classList.add('show');
+  const completed=sessionResults.filter(r=>r.completed).length;
+  const totalElapsed=sessionResults.reduce((s,r)=>s+r.elapsed,0);
+  const mins=Math.floor(totalElapsed/60);
+  const secs=totalElapsed%60;
+  document.getElementById('resultsSub').textContent=`${completed} of ${TOPICS.length} topics completed · ${mins}m ${secs}s total speaking time`;
+  const list=document.getElementById('resultsList');
+  list.innerHTML='';
+  sessionResults.forEach((r,i)=>{
+    const pct=Math.min(100,Math.round((r.elapsed/r.total)*100));
+    const sc=r.completed?'full':r.elapsed>0?'partial':'skipped';
+    const sl=r.completed?'FULL':r.elapsed>0?'PARTIAL':'SKIP';
+    list.innerHTML+=`<div class="result-row">
+      <span class="rr-num">0${i+1}</span>
+      <div class="rr-info"><div class="rr-name">${r.name}</div><div class="rr-time">Spoke for ${r.elapsed}s of ${r.total}s</div></div>
+      <div class="rr-bar-wrap"><div class="rr-bar" style="width:${pct}%"></div></div>
+      <span class="rr-status ${sc}">${sl}</span>
+    </div>`;
+  });
+  let msg='';
+  const finalDone=sessionResults.find(r=>r.id===5&&r.completed);
+  if(finalDone)msg=`<strong>Week 2 complete! 🎉</strong> You told your story using Past Simple, Past Continuous, life events, emotions and connectors. That's real fluency in action. Rest tomorrow, do your immersion on Sunday, and come back stronger for Week 3.`;
+  else if(completed>=4)msg=`<strong>Fantastic output session!</strong> You're so close — try the Final Story when you're ready. That 3-minute challenge is where everything comes together.`;
+  else if(completed>=2)msg=`<strong>Good session!</strong> You spoke for ${mins} minutes of real English. Try to come back to the topics you skipped — especially the Final Story. That's where Week 2 really clicks.`;
+  else msg=`<strong>Every minute counts.</strong> Even ${mins}m ${secs}s of speaking practice moves you forward. Come back to Output Day tomorrow or on Saturday — the more you speak, the faster it flows.`;
+  document.getElementById('resultsMsg').innerHTML=msg;
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function restartAll(){
+  sessionResults=[];currentIdx=null;
+  clearInterval(timerInterval);isRunning=false;
+  document.getElementById('resultsCard').classList.remove('show');
+  document.getElementById('timerTopic').textContent='Selecione um tópico acima';
+  document.getElementById('timerPrompt').textContent='Escolha um tópico para ver o prompt aqui.';
+  document.getElementById('timerGoals').style.display='none';
+  document.getElementById('timerDisplay').textContent='—';
+  document.getElementById('timerUnit').textContent='select topic';
+  document.getElementById('btnStart').disabled=true;
+  document.getElementById('btnStart').textContent='Start →';
+  document.getElementById('btnSkip').style.display='none';
+  document.getElementById('circleArc').style.strokeDashoffset=CIRCUMFERENCE;
+  renderTopics();renderPhasebar();
+}
+
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(type?' '+type:'');
+  setTimeout(()=>t.className='toast',2500);
+}
+
+renderTopics();renderPhasebar();
+</script>
+</body>
+</html>
